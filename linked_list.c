@@ -55,3 +55,40 @@ void print_list(struct lnode* l) {
     printf("]\n");
     return;
 }
+
+
+// struct lnode* even_odd_list(struct lnode* l) {
+
+//     struct lnode* even = malloc(sizeof(struct lnode));
+//     struct lnode* odd = malloc(sizeof(struct lnode));
+//     if (!l) return l;
+//     struct lnode* ll = l->next;
+//     // struct
+//     int even_odd = 1; 
+//     while(ll != NULL) {
+//         if (ll->next == NULL) {
+//             if(even_odd == 1) {
+//                 odd 
+//             }
+//         }
+//     }
+
+
+
+
+// }
+
+
+
+// int main() {
+//     int* a = malloc(sizeof(int));
+//     *a = 22;
+//     free(a);
+//     int *c = malloc(sizeof(int));
+//     *c = 69;
+//     int b = *a;
+//     printf("%d\n", b);
+
+//     return 0;
+// }
+

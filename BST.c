@@ -22,10 +22,27 @@ struct node* make_node(int key) {
 }
 
 
+int search_bst(struct node* tree, int num) {
+    struct node* t = tree;
+    while (t != NULL) {
+        if (t->key == num) {
+            return 1;
+        }
+        else if (t->key < num) {
+            t = t->right;
+        }
+        else {
+            t = t->left;
+        }
+    }
+    return 0;
+}
+
 void insert_bst(struct node** tree, int num) {
     struct node* root = *tree;
 
     while (*tree != NULL) {
+        
     
         if (num == (*tree)->key) {
             tree = &root; 
@@ -45,24 +62,84 @@ void insert_bst(struct node** tree, int num) {
     
     *tree = new_node;
     tree = &root; 
+    return;
 }
 
+void delete_bst(struct node* t, int n) {
+    
+    if(search_bst(t, n)== 0) return;
+    struct node* cur = t;
+    struct node* par = t;
 
-int search_bst(struct node* tree, int num) {
-    struct node* t = tree;
-    while (t != NULL) {
-        if (t->key == num) {
-            return 1;
-        }
-        else if (t->key < num) {
-            t = t->right;
+    while(cur->key != n) {
+        if(cur->key < n) {
+            par = cur;
+            cur = cur->right;
         }
         else {
-            t = t->left;
+            par = cur;
+            cur = cur->left;
         }
     }
-    return 0;
+
+    if ((cur->left == NULL) && (cur->right == NULL)) {
+        if(par->left == cur) {
+            par->left = NULL;
+            free(cur);
+            return;
+        }
+        else {
+            par->right = NULL;
+            free(cur);
+            return;
+        }
+    }
+    else if (cur->right == NULL) {
+        if(par->left == cur) {
+            par->left = cur->left;
+            free(cur);
+            return;
+        }
+
+        else {
+            par->right = cur->left;
+            free(cur);
+            return;
+        }
+    }
+
+    else if (cur->left == NULL) {
+        if(par->left == cur) {
+            par->left = cur->right;
+            // free(cur);
+            return;
+        }
+        else {
+            par->right = cur->right;
+            // free(cur);
+            return;
+        }
+    }
+
+    else {
+        struct node* r = cur->left;
+        struct node* p = cur;
+        while(r->right != NULL) {
+            p = r;
+            r = r->right;
+        }
+        cur->key = r->key;
+        p->right = r->left;
+        free(r);
+        return;
+
+    }
+
+
 }
+
+
+
 
 void adjust_node(struct node* parent, struct node* cur, int r) {
     if(r == 1) {
@@ -75,7 +152,7 @@ void adjust_node(struct node* parent, struct node* cur, int r) {
 
 
 
-void delete_bst(struct node* tree, int num) {
+void dlt_bst(struct node* tree, int num) {
     if (tree == NULL) {
         return;
     }
@@ -149,7 +226,7 @@ struct lnode* bst_to_list(struct node* t) {
     struct node* pred;
     while (t != NULL) {
         if(t->left == NULL) {
-            printf("%d\n", t->key);
+            // printf("%d\n", t->key);
             res = cons(t->key, res);
             t = t->right;
             
@@ -165,7 +242,7 @@ struct lnode* bst_to_list(struct node* t) {
                 t = root->left;
             }
             else {
-                printf("%d\n", root->key);
+                // printf("%d\n", root->key);
                 res = cons(root->key, res);
                 t->right = NULL;
                 t = root->right;
@@ -198,20 +275,22 @@ int main() {
         insert_bst(&test, random);
         history[i] = random;
     }
+    delete_bst(test, 157);
     struct lnode* q = bst_to_list(test);
+
     
     print_list(q);
     // printf("%d \n", test->key);
-    // for(int i = 0; i < 100; i++) {
-    //     int n = history[i];
-    //     if (n != (test->key)) {
-    //         delete_bst(test, n);
-    //     }
-    // }
+    for(int i = 0; i < 100; i++) {
+        int n = history[i];
+        printf("%d\n", n);
+        delete_bst(test, n);
+        
+        // printf("%d ", search_bst(test, n));
+        // insert_bst(&test, n);
+    }
 
 
 
     return 0;
 }
-
-
